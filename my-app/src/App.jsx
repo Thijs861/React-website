@@ -1,40 +1,85 @@
-// Dit is een React hook 
-import { useState } from 'react' 
-// Importeer logos en CSS.
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
 
 function App() {
-  const [count, setCount] = useState(0) // 'count' actueel nummer of kliks, 'setCount' knop om het nummer te veranderen. 'useState' start bij 0
+  const [task, setTask ] = useState('');
+  const [tasks, setTasks] = useState([]);
+
+  const handleAddTask = () => {
+    if (task.trim() !== '') {
+      setTasks([...tasks, task]);
+      setTask('')
+    }
+  };
+
+  const handleDeleteTask = (index) => {
+    const newTasks = tasks.filter((_, i) => i !== index);
+    setTasks(newTasks);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <button style={{marginLeft: '10px' }} onClick={() => setCount(0)}>
-          Reset
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div style={{ maxWidth: '400px', margin: '50px auto', textAlign: 'center' }}>
+      <h1>📝 To-Do List</h1>
+
+      <input
+        value={task}
+        onChange={(e) => setTask(e.target.value)}
+        placeholder="Enter a task"
+        style={{
+          padding: '10px',
+          width: '70%',
+          marginRight: '10px',
+          borderRadius: '8px',
+          border: '1px solid #ccc',
+        }}
+      />
+      <button
+        onClick={handleAddTask}
+        style={{
+          padding: '10px',
+          borderRadius: '8px',
+          border: 'none',
+          backgroundColor: '#22c55e',
+          color: 'white',
+          cursor: 'pointer',
+        }}
+      >
+        Add
+      </button>
+
+      <ul style={{ listStyle: 'none', padding: 0, marginTop: '20px' }}>
+        {tasks.map((item, index) => (
+          <li
+            key={index}
+            style={{
+              marginBottom: '10px',
+              background: '#d9d9d9d9',
+              padding: '10px',
+              borderRadius: '8px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            {item}
+            <button
+              onClick={() => handleDeleteTask(index)}
+              style={{
+                background: '#ef4444',
+                border: 'none',
+                color: 'white',
+                padding: '5px 10px',
+                borderRadius: '6px',
+                cursor: 'pointer',
+              }}
+            >
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
+      <p style={{color: '#b7b7b7'}}>Made in React + Vite!</p>
+    </div>
+  );
 }
 
-export default App
+export default App;
